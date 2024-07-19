@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('ApplicationStop') {
+            steps {
+                script {
+                    // Assuming the stop server script is not provided, add the stop command if necessary
+                    // sh 'scripts/stop_server.sh'
+                    echo 'ApplicationStop stage - script to stop the server is not provided.'
+                }
+            }
+        }
+        
+        stage('BeforeInstall') {
+            steps {
+                script {
+                    sh 'scripts/cleanup.sh'
+                    sh 'scripts/install_dependencies.sh'
+                }
+            }
+        }
+        
+        stage('Install') {
+            steps {
+                script {
+                    // Copying files as specified in appspec.yml
+                    sh 'cp index.html /var/www/html/'
+                    sh 'cp components.html /var/www/html/'
+                    sh 'cp -r assets /var/www/html/'
+                }
+            }
+        }
+        
+        stage('AfterInstall') {
+            steps {
+                script {
+                    sh 'scripts/start_server.sh'
+                }
+            }
+        }
+        
+        stage('ValidateService') {
+            steps {
+                script {
+                    sh 'scripts/validate_service.sh'
+                }
+            }
+        }
+        
+        stage('ChangePermissions') {
+            steps {
+                script {
+                    sh 'scripts/change_permissions.sh'
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Deployment successful!'
+            // You can add further actions or notifications on successful deployment
+        }
+        failure {
+            echo 'Deployment failed!'
+            // Handle failures or trigger notifications
+        }
+    }
+}
