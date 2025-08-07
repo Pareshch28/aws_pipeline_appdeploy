@@ -3,5 +3,7 @@
 # Update the package index
 apt update -y
 
+rm -rf /var/www/html/index.html
+
 # Install Apache2
 apt install -y apache2
