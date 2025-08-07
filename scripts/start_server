@@ -1,3 +1,8 @@
 #!/bin/bash
 
-systemctl start apache2
+# Detect OS and start apache2/httpd
+if [ -f /etc/debian_version ]; then
+    systemctl start apache2
+elif [ -f /etc/redhat-release ]; then
+    systemctl start httpd
+fi

@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Update the package index
-apt update -y
-
-rm -rf /var/www/html/index.html
-
-# Install Apache2
-apt install -y apache2
+# Detect OS and install apache2/httpd
+if [ -f /etc/debian_version ]; then
+    # Ubuntu/Debian
+    apt update -y
+    apt install -y apache2
+elif [ -f /etc/redhat-release ]; then
+    # Amazon Linux/RHEL
+    yum update -y
+    yum install -y httpd
+fi

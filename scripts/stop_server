@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Gracefully stop Apache2 if it's running
-if pgrep apache2 > /dev/null
-then
-    service apache2 stop
+# Detect OS and stop apache2/httpd
+if [ -f /etc/debian_version ]; then
+    systemctl stop apache2
+elif [ -f /etc/redhat-release ]; then
+    systemctl stop httpd
 fi
