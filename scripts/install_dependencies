@@ -1,3 +1,4 @@
 #!/bin/bash
 apt install -y apache2
-
+sudo chown -R root:root /var/www/html
+sudo chmod -R 755 /var/www/html
